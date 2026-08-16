@@ -1,11 +1,16 @@
 import { chromium } from 'playwright';
+import { fileURLToPath } from 'url';
+import path from 'path';
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const APP = 'file://' + path.join(ROOT, 'recruiting_board_v2.html');
+
 const b = await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
 const p = await b.newPage();
 p.on('pageerror',e=>console.log('PAGEERROR:',e.message));
 const fail=[]; const ok=(n,c,x='')=>{console.log((c?'PASS  ':'FAIL  ')+n+(x?'  '+x:'')); if(!c) fail.push(n);};
 
 // A coach who already had the OLD 154 events saved, none of the new ones.
-await p.goto('file:///home/claude/recruiting_board_v2.html'); await p.waitForTimeout(1400);
+await p.goto(APP); await p.waitForTimeout(1400);
 await p.evaluate(async ()=>{
   const old = SEED_EVENTS.filter(e=> !e.psUrl).map(e=> Object.assign({}, e, {pgUrl:'',pbrUrl:'',ftUrl:''}));
   localStorage.setItem('events-store', JSON.stringify(old));

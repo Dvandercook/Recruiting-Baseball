@@ -1,9 +1,14 @@
 import { chromium } from 'playwright';
+import { fileURLToPath } from 'url';
+import path from 'path';
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const APP = 'file://' + path.join(ROOT, 'recruiting_board_v2.html');
+
 const b = await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
 const p = await b.newPage();
 p.on('pageerror', e => console.log('PAGEERROR:', e.message));
 p.on('console', m => { if(m.type()==='error') console.log('CONSOLE ERR:', m.text()); });
-await p.goto('file:///home/claude/recruiting_board_v2.html');
+await p.goto(APP);
 await p.waitForTimeout(900);
 
 const fail = [];

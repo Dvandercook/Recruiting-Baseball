@@ -1,0 +1,7 @@
+First Name,Last Name,Position,Tier,School,State,Phone,GPA,X / Twitter,Scouting Notes
+Tate,Hagen,RHP,1,Rosemount,MN,612-555-0100,3.9,@tatehagen,"Big frame, sits 88-90"
+Jonah,Reyes,SS/2B,2,Del Norte,CA,858-555-0142,4.1,https://x.com/jonahreyes,"Plus runner; ""quick"" hands"
+Michael,Alberto,C/OF,1,Bergen Catholic,NJ,201-316-6909,4.0,@MikeAlberto05,should flag as existing
+Jonah,Reyes,SS,2,Del Norte,CA,858-555-0142,4.1,,repeat of row 3
+,Nolastname,RHP,2,Somewhere,TX,,,,missing first name
+Ellis,Vance,LHP,,Brophy,AZ,602-555-0199,3.7,@ellisvance,no tier column value

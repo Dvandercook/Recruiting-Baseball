@@ -5,6 +5,11 @@ import { chromium } from 'playwright';
 import { start } from './mock_supabase.mjs';
 import fs from 'fs';
 import vm from 'vm';
+import { fileURLToPath } from 'url';
+import path from 'path';
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const APP = 'file://' + path.join(ROOT, 'recruiting_board_v2.html');
+
 
 const PORT = 8802, API = `http://127.0.0.1:${PORT}`;
 const mock = await start(PORT);
@@ -15,7 +20,7 @@ const ok = (n,c,x='') => { console.log((c?'PASS  ':'FAIL  ')+n+(x?'  '+x:'')); i
 const b = await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
 const p = await b.newPage();
 p.on('pageerror', e => console.log('PAGEERROR:', e.message));
-await p.goto('file:///home/claude/recruiting_board_v2.html');
+await p.goto(APP);
 await p.waitForTimeout(900);
 await p.evaluate(async (url)=>{
   Cloud.cfg = { url, key:'anon-test-key' }; await Cloud.saveCfg();
@@ -43,7 +48,7 @@ console.log('seeded:', JSON.stringify(seeded), '| sync:', JSON.stringify(s));
 await b.close();
 
 /* ---- 2. run the mirror's own code over what the database now holds ---- */
-const src = fs.readFileSync('sheet_mirror.gs','utf8');
+const src = fs.readFileSync(path.join(ROOT, 'sheet_mirror.gs'),'utf8');
 const ctx = vm.createContext({ console });
 vm.runInContext(src, ctx);
 

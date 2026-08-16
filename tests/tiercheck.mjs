@@ -1,10 +1,15 @@
 import { chromium } from 'playwright';
+import { fileURLToPath } from 'url';
+import path from 'path';
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const APP = 'file://' + path.join(ROOT, 'recruiting_board_v2.html');
+
 const b = await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
 const ctx = await b.newContext();
 const p = await ctx.newPage();
 const errs=[]; p.on('pageerror',e=>errs.push('PAGEERROR: '+e.message));
 p.on('console',m=>{if(m.type()==='error'&&!m.text().includes('TUNNEL'))errs.push('CONSOLE: '+m.text().slice(0,120));});
-await p.goto('file:///home/claude/recruiting_board_v2.html'); await p.waitForTimeout(900);
+await p.goto(APP); await p.waitForTimeout(900);
 await p.locator('[data-goto="hs"]').click(); await p.waitForTimeout(700);
 
 console.log('== filter chips ==');
@@ -39,7 +44,7 @@ console.log('sidebar:', (await p.locator('.pos-tab').allTextContents()).map(s=>s
 console.log('\n== CSV round trip with new tiers ==');
 await p.locator('#hsModeSeg button[data-mode="board"]').click(); await p.waitForTimeout(400);
 await p.locator('#importCsvBtn').click(); await p.waitForTimeout(400);
-await p.locator('#impFile').setInputFiles('/home/claude/test_tiers.csv'); await p.waitForTimeout(800);
+await p.locator('#impFile').setInputFiles(path.join(ROOT,'tests','test_tiers.csv')); await p.waitForTimeout(800);
 console.log('summary:', (await p.locator('#impSummary').innerText()).replace(/\n/g,' '));
 await p.locator('#importConfirm').click(); await p.waitForTimeout(900);
 await p.locator('#bbFiltersBtn').click(); await p.waitForTimeout(300);

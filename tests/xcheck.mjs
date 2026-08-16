@@ -1,11 +1,16 @@
 import { chromium } from 'playwright';
+import { fileURLToPath } from 'url';
+import path from 'path';
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const APP = 'file://' + path.join(ROOT, 'recruiting_board_v2.html');
+
 const b = await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
 const ctx = await b.newContext();
 const p = await ctx.newPage();
 const errs=[]; p.on('pageerror',e=>errs.push('PAGEERROR: '+e.message));
 p.on('console',m=>{if(m.type()==='error'&&!m.text().includes('TUNNEL'))errs.push('CONSOLE: '+m.text().slice(0,110));});
 const popups=[]; ctx.on('page',pg=>popups.push(pg.url()));
-await p.goto('file:///home/claude/recruiting_board_v2.html'); await p.waitForTimeout(1100);
+await p.goto(APP); await p.waitForTimeout(1100);
 await p.locator('[data-goto="hs"]').click(); await p.waitForTimeout(800);
 
 const cards = await p.locator('.bb-card').count();
@@ -30,7 +35,7 @@ await p.screenshot({path:'bbx.png', clip:{x:0,y:140,width:760,height:420}});
 
 console.log('\n-- sandboxed frame: falls back, no dead click --');
 const p2 = await ctx.newPage();
-await p2.goto('file:///home/claude/sandbox_host.html'); await p2.waitForTimeout(2200);
+await p2.goto('file://' + path.join(ROOT, 'sandbox_host.html')); await p2.waitForTimeout(2200);
 const f = p2.frameLocator('#f');
 await f.locator('[data-goto="hs"]').click(); await p2.waitForTimeout(900);
 await f.locator('.bb-card .bb-x').first().click({noWaitAfter:true}); await p2.waitForTimeout(900);

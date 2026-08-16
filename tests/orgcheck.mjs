@@ -1,9 +1,14 @@
 import { chromium } from 'playwright';
+import { fileURLToPath } from 'url';
+import path from 'path';
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const APP = 'file://' + path.join(ROOT, 'recruiting_board_v2.html');
+
 const b = await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
 const p = await b.newPage();
 p.on('pageerror', e => console.log('PAGEERROR:', e.message));
 const fail=[]; const ok=(n,c,x='')=>{console.log((c?'PASS  ':'FAIL  ')+n+(x?'  '+x:'')); if(!c) fail.push(n);};
-await p.goto('file:///home/claude/recruiting_board_v2.html'); await p.waitForTimeout(1200);
+await p.goto(APP); await p.waitForTimeout(1200);
 
 /* ---- data encoding survived ---- */
 const data = await p.evaluate(()=>{

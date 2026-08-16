@@ -1,5 +1,10 @@
 import { chromium } from 'playwright';
 import { start } from './mock_supabase.mjs';
+import { fileURLToPath } from 'url';
+import path from 'path';
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const APP = 'file://' + path.join(ROOT, 'recruiting_board_v2.html');
+
 
 const PORT = 8799;
 const API = `http://127.0.0.1:${PORT}`;
@@ -14,7 +19,7 @@ async function coach(email, pass){
   const ctx = await b.newContext();
   const p = await ctx.newPage();
   p.on('pageerror', e => console.log(`PAGEERROR[${email}]:`, e.message));
-  await p.goto('file:///home/claude/recruiting_board_v2.html');
+  await p.goto(APP);
   await p.waitForTimeout(900);
   await p.evaluate(async (cfg)=>{
     Cloud.cfg = { url: cfg.url, key:'anon-test-key' };
@@ -178,7 +183,7 @@ ok('event games sync', staffOnB.game === true);
 /* ---- 8. an unauthenticated device gets nothing ---- */
 const anon = await b.newContext();
 const ap = await anon.newPage();
-await ap.goto('file:///home/claude/recruiting_board_v2.html');
+await ap.goto(APP);
 await ap.waitForTimeout(800);
 const anonRes = await ap.evaluate(async (url)=>{
   const r = await fetch(url + '/rest/v1/records?select=kind', { headers:{ apikey:'anon-test-key' } });

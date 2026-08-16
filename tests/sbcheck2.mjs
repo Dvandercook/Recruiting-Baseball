@@ -1,11 +1,16 @@
 import { chromium } from 'playwright';
+import { fileURLToPath } from 'url';
+import path from 'path';
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const APP = 'file://' + path.join(ROOT, 'recruiting_board_v2.html');
+
 const b = await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
 const ctx = await b.newContext();
 const p = await ctx.newPage();
 const errs = [];
 p.on('console', m => { if(m.type()==='error' && !/TUNNEL/.test(m.text())) errs.push(m.text().slice(0,160)); });
 p.on('pageerror', e => errs.push('PAGEERROR '+e.message));
-await p.goto('file:///home/claude/sandbox_host.html'); await p.waitForTimeout(1400);
+await p.goto('file://' + path.join(ROOT, 'sandbox_host.html')); await p.waitForTimeout(1400);
 const f = p.frameLocator('#f');
 const fail = [];
 const ok = (n,c,x='') => { console.log((c?'PASS  ':'FAIL  ')+n+(x?'  '+x:'')); if(!c) fail.push(n); };

@@ -1,4 +1,9 @@
 import { chromium } from 'playwright';
+import { fileURLToPath } from 'url';
+import path from 'path';
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const APP = 'file://' + path.join(ROOT, 'recruiting_board_v2.html');
+
 const b = await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
 const p = await (await b.newContext()).newPage();
 const errs=[]; p.on('pageerror',e=>errs.push('PAGEERROR: '+e.message));
@@ -24,7 +29,7 @@ await p.addInitScript(() => {
     return real(url, opts);
   };
 });
-await p.goto('file:///home/claude/recruiting_board_v2.html'); await p.waitForTimeout(1100);
+await p.goto(APP); await p.waitForTimeout(1100);
 await p.locator('[data-goto="hs"]').click(); await p.waitForTimeout(600);
 await p.locator('#addPlayerBtn').click(); await p.waitForTimeout(400);
 // a dummy image just to enable the button
