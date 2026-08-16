@@ -1,0 +1,820 @@
+<body>
+  <!-- ============ HOME ============ -->
+  <div class="view active" id="view-home">
+    <div class="home-wrap"><div class="home-inner">
+      <div class="home-head">
+        <h1>2028 Recruiting <span class="yr">Hub</span></h1>
+        <p id="homeSub">Everything in one place. Your work saves as you go.</p>
+      </div>
+      <div class="home-grid" id="homeGrid"></div>
+    </div></div>
+  </div>
+
+  <!-- ============ HIGH SCHOOL RECRUITING (the board) ============ -->
+  <div class="view" id="view-hs">
+  <div class="topbar">
+    <button class="home-btn" data-goto="home" title="Back to hub">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10.5 12 3l9 7.5V21H3z"/></svg>
+      Hub
+    </button>
+    <div class="brand">
+      <svg viewBox="0 0 24 24"><path fill="#F4F1E8" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm6.32 4.68c.6.83 1.02 1.79 1.24 2.82-1.06-.16-2.4-.06-3.86.42-.2-.5-.44-.98-.72-1.42 1.3-.9 2.5-1.5 3.34-1.82zM12 4c1.34 0 2.6.34 3.7.94-.8.36-1.94.96-3.14 1.8-.9-.86-1.85-1.5-2.66-1.94A7.96 7.96 0 0 1 12 4zM8.44 5.6c.82.4 1.8 1.02 2.72 1.9-1.3 1.1-2.56 2.5-3.5 4.14-1.02-.24-2.15-.3-3.32-.1A8.05 8.05 0 0 1 8.44 5.6zM4 12c0-.1 0-.2.02-.3 1.1-.24 2.15-.22 3.06-.02-.5 1.14-.82 2.36-.9 3.6-.9.5-1.7 1.1-2.34 1.72A7.94 7.94 0 0 1 4 12zm2.5 6.5c.5-.5 1.14-1 1.9-1.44.2 1.05.56 2 1.02 2.86A8.07 8.07 0 0 1 6.5 18.5zm5.02 1.48c-.6-.9-1.06-1.98-1.3-3.16 1.44-.62 3-.94 4.5-.9.36 1.1.56 2.28.58 3.5-1.2.44-2.5.62-3.78.56zm2.9-9.6c1.5-.9 2.9-1.4 4-1.6.1.4.16.8.16 1.22 0 .3-.02.6-.06.88-1.36-.1-2.9.1-4.5.7-.16-.42-.36-.82-.6-1.2zm2.62 8.9c-.44-.86-.76-1.8-.94-2.8 1.36-.06 2.6.16 3.6.56a8.05 8.05 0 0 1-2.66 2.24zm3.34-3.9c-1.2-.5-2.7-.78-4.36-.7-.02-1.14-.2-2.24-.5-3.28 1.5-.5 2.9-.6 3.98-.46.06.4.1.8.1 1.22 0 1.14-.24 2.22-.68 3.22-.06.06-.1 0-.14 0z"/></svg>
+      <h1 id="poolTitle">2028 Recruiting Board</h1>
+    </div>
+    <div class="sub" id="lastUpdated">Draft board</div>
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input type="text" id="searchInput" placeholder="Search name, state, school…">
+    </div>
+    <div class="count-pill" id="totalCount">306 players</div>
+    <button class="add-btn ghost-btn" id="exportCsvBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 3v12M7 10l5 5 5-5M4 19h16"/></svg>
+      Export CSV
+    </button>
+    <button class="add-btn ghost-btn" id="importCsvBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 21V9M7 14l5-5 5 5M4 5h16"/></svg>
+      Import CSV
+    </button>
+    <button class="add-btn" id="addPlayerBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+      Add Player
+    </button>
+  </div>
+  <div class="bb-bar">
+    <div class="seg big" id="hsModeSeg">
+      <button data-mode="board" class="active">Big Board</button>
+      <button data-mode="grid">Grid</button>
+    </div>
+    <button class="filters-btn" id="bbFiltersBtn">Filters (0)</button>
+    <button class="filters-btn" id="marksBtn" title="Auto marks & academic badge">Marks</button>
+    <button class="filters-btn" id="mergeBtn" title="Find and merge duplicate players">Merge</button>
+    <button class="filters-btn" id="linkPasteBtn" title="Paste Perfect Game or PBR profile links">Paste links</button>
+    <span class="bb-stat" id="bbStat"></span>
+  </div>
+  <div class="bb-panel" id="bbPanel">
+    <div class="fl-row"><span class="fl-label">Class</span><div class="fl-chips" id="flClass"></div></div>
+    <div class="fl-row"><span class="fl-label">Pos</span><div class="fl-chips" id="flPos"></div></div>
+    <div class="fl-row"><span class="fl-label">Tier</span><div class="fl-chips" id="flTier"></div></div>
+    <div class="fl-row"><span class="fl-label">Bats</span>
+      <div class="fl-chips" id="flBats"></div>
+      <div class="fl-range">
+        <span id="htLabel">Ht any</span>
+        <input type="range" id="flHt" min="0" max="80" value="0">
+      </div>
+      <div class="fl-range">
+        <span id="wtLabel">Wt any</span>
+        <input type="range" id="flWt" min="0" max="260" value="0">
+      </div>
+    </div>
+    <div class="fl-row"><span class="fl-label">Group by</span><div class="fl-chips" id="flGroup"></div></div>
+    <div class="fl-row"><span class="fl-label"></span><button class="fl-reset" id="flReset">Clear all filters</button></div>
+  </div>
+  <div class="bb-wrap active" id="bbWrap"></div>
+  <div class="layout" id="hsGridLayout" style="display:none">
+    <div class="sidebar" id="sidebar">
+      <div class="group-toggle" id="groupToggle">
+        <button class="gt-btn active" data-mode="pos">Position</button>
+        <button class="gt-btn" data-mode="tier">Tier</button>
+      </div>
+      <div class="sidebar-label" id="sidebarLabel">Position</div>
+      <div id="posTabs"></div>
+    </div>
+    <div class="main">
+      <div class="list-header">
+        <h2 id="posTitle">All</h2>
+        <span class="tagline" id="posTagline"></span>
+      </div>
+      <div class="col-heads">
+        <span>Rank</span><span>Player</span><span>SCHOOL</span><span>POS</span><span></span>
+      </div>
+      <div class="roster" id="roster"></div>
+    </div>
+  </div>
+  </div><!-- /view-hs -->
+
+  <!-- ============ EVENTS (fall / summer / spring) ============ -->
+  <div class="view" id="view-events">
+    <div class="sec-head">
+      <button class="home-btn" data-goto="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10.5 12 3l9 7.5V21H3z"/></svg>Hub</button>
+      <h2 id="evTitle">Fall Events</h2>
+      <div class="seg" id="evSeasonSeg">
+        <button data-season="fall" class="active">Fall</button>
+        <button data-season="summer">Summer</button>
+        <button data-season="spring">Spring</button>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:8px;">
+        <button class="add-btn ghost-btn" id="evExport"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 3v12M7 10l5 5 5-5M4 19h16"/></svg>Export CSV</button>
+        <button class="add-btn ghost-btn" id="evImport"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 21V9M7 14l5-5 5 5M4 5h16"/></svg>Import CSV</button>
+        <button class="add-btn" id="evAdd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>Add Event</button>
+      </div>
+    </div>
+    <div class="sec-body"><div class="sec-inner">
+      <div class="sec-tools">
+        <input type="text" id="evSearch" placeholder="Search event, location…">
+        <select id="evDivision"><option value="">All divisions</option></select>
+        <select id="evState"><option value="">All states</option></select>
+        <label style="display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--chalk-dim);cursor:pointer;">
+          <input type="checkbox" id="evUpcoming"> Upcoming only
+        </label>
+        <label style="display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--chalk-dim);cursor:pointer;">
+          <input type="checkbox" id="evStarred"> ★ Starred only
+        </label>
+        <span class="ev-range">
+          <label for="evFrom">From</label><input type="date" id="evFrom">
+          <label for="evTo">to</label><input type="date" id="evTo">
+          <button class="ev-range-clear" id="evRangeClear" title="Clear the date range" style="display:none">✕</button>
+        </span>
+        <span class="sec-count" id="evCount"></span>
+      </div>
+      <div id="evBody"></div>
+    </div></div>
+  </div>
+
+  <!-- ============ RECRUITING CALENDAR ============ -->
+  <div class="view" id="view-calendar">
+    <div class="sec-head">
+      <button class="home-btn" data-goto="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10.5 12 3l9 7.5V21H3z"/></svg>Hub</button>
+      <h2>Recruiting Calendar</h2>
+      <div class="seg" id="calViewSeg">
+        <button data-calview="board" class="active">Board</button>
+        <button data-calview="week">Week</button>
+        <button data-calview="day">Day</button>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <span class="ev-range">
+          <input type="date" id="calFrom"><span>→</span><input type="date" id="calTo">
+        </span>
+        <button class="add-btn ghost-btn" id="calOfficials">Official visits</button>
+        <button class="add-btn ghost-btn" id="staffBtn2" data-staff="1">Staff</button>
+        <button class="add-btn" id="calAdd">+ Entry</button>
+      </div>
+    </div>
+    <div class="sec-body"><div class="sec-inner">
+      <div id="calBanner"></div>
+      <div id="calBody"></div>
+      <p class="src-note">Periods are NCAA Division I baseball, 2026-27. Click any day to book something on it.</p>
+    </div></div>
+  </div>
+
+  <!-- ============ TEAM MANAGEMENT ============ -->
+
+
+  <!-- ============ TASKS ============ -->
+  <div class="view" id="view-tasks">
+    <div class="sec-head">
+      <button class="home-btn" data-goto="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10.5 12 3l9 7.5V21H3z"/></svg>Hub</button>
+      <h2>Tasks</h2>
+      <div style="margin-left:auto;display:flex;gap:8px;align-items:center;">
+        <button class="add-btn ghost-btn" id="staffBtn">Staff</button>
+        <span class="sec-count" id="tkCount"></span>
+      </div>
+    </div>
+    <div class="sec-body"><div class="sec-inner">
+      <div class="tk-new">
+        <input type="text" id="tkText" placeholder='New task — e.g. "Call Chris Bosco"'>
+        <input type="text" id="tkPlayer" list="tkPlayerList" placeholder="Link a player (optional)">
+        <datalist id="tkPlayerList"></datalist>
+        <select id="tkCoach"></select>
+        <input type="datetime-local" id="tkWhen" title="Remind me">
+        <button class="add-btn" id="tkAdd">Add</button>
+      </div>
+      <div class="sec-tools">
+        <label style="display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--chalk-dim);cursor:pointer;">
+          <input type="checkbox" id="tkShowDone"> Show done
+        </label>
+        <select id="tkMine" style="max-width:200px"></select>
+      </div>
+      <div id="tkList"></div>
+    </div></div>
+  </div>
+
+  <!-- ============ EVENT DETAIL ============ -->
+  <div class="view" id="view-edetail">
+    <div class="sec-head">
+      <button class="home-btn" id="edBack"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>Events</button>
+      <div style="min-width:0">
+        <h2 id="edName">Event</h2>
+        <div class="ed-sub" id="edSub"></div>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="add-btn ghost-btn" id="edImport">Import schedule</button>
+        <button class="add-btn ghost-btn" id="edNotes">Take notes</button>
+        <button class="add-btn ghost-btn" id="edWhiteboard">Whiteboard</button>
+        <button class="add-btn ghost-btn" id="edDaySheet">Day sheet</button>
+        <button class="add-btn ghost-btn" id="edBook">Event book</button>
+      </div>
+    </div>
+    <div class="sec-body"><div class="sec-inner">
+      <div class="seg big" id="edTabs">
+        <button data-edtab="schedule" class="active">Schedule</button>
+        <button data-edtab="rosters">Rosters</button>
+        <button data-edtab="players">Players</button>
+      </div>
+      <div class="sec-tools">
+        <label style="display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--chalk-dim);cursor:pointer;">
+          <input type="checkbox" id="edAttendOnly"> Going only
+        </label>
+        <label style="display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--chalk-dim);cursor:pointer;">
+          <input type="checkbox" id="edRankedOnly"> Has one of mine
+        </label>
+      </div>
+      <div class="ed-days" id="edDays"></div>
+      <div id="edBody"></div>
+    </div></div>
+  </div>
+
+  <!-- ============ TRAVEL ORGANIZATIONS ============ -->
+  <div class="view" id="view-orgs">
+    <div class="sec-head">
+      <button class="home-btn" data-goto="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10.5 12 3l9 7.5V21H3z"/></svg>Hub</button>
+      <h2>Travel Organizations</h2>
+      <div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="add-btn ghost-btn" id="ogSeed">Starter list</button>
+        <button class="add-btn ghost-btn" id="ogFromBoard">Build from my board</button>
+        <button class="add-btn ghost-btn" id="ogPasteBtn">Paste a list</button>
+        <button class="add-btn ghost-btn" id="ogExport"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 3v12M7 10l5 5 5-5M4 19h16"/></svg>Export CSV</button>
+      </div>
+    </div>
+    <div class="sec-body"><div class="sec-inner">
+      <p class="og-intro">
+        Your tiers, not somebody else's. There is no free list of every travel program ranked —
+        Perfect Game's team rankings are theirs, so we link out rather than copy them in.
+        <a href="https://www.perfectgame.org/rankings/team/Default.aspx" target="_blank" rel="noopener">PG team rankings ↗</a>
+        <a href="https://www.prepbaseballreport.com/" target="_blank" rel="noopener">PBR ↗</a>
+      </p>
+      <div class="sec-tools">
+        <input type="text" id="ogSearch" placeholder="Search program, region…">
+        <label style="display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--chalk-dim);cursor:pointer;">
+          <input type="checkbox" id="ogOnlyTiered"> Tiered only
+        </label>
+        <span style="display:flex;gap:7px;margin-left:auto;">
+          <input type="text" id="ogNew" placeholder="Add a program…" style="min-width:200px">
+          <button class="add-btn" id="ogAdd">Add</button>
+        </span>
+        <span class="sec-count" id="ogCount"></span>
+      </div>
+      <div class="og-heads" id="ogHeads">
+        <span data-ogsort="name" class="sorted" data-dir="up">Program</span>
+        <span data-ogsort="tier">Your tier</span>
+        <span data-ogsort="rank">Rank</span>
+        <span data-ogsort="players">Your recruits</span>
+        <span>Notes</span>
+        <span></span>
+      </div>
+      <div id="ogBody"></div>
+    </div></div>
+  </div>
+
+  <div class="view" id="view-team">
+    <div class="sec-head">
+      <button class="home-btn" data-goto="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10.5 12 3l9 7.5V21H3z"/></svg>Hub</button>
+      <h2>Team Management</h2>
+      <div style="margin-left:auto;display:flex;gap:8px;">
+        <button class="add-btn ghost-btn" id="tmExport"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 3v12M7 10l5 5 5-5M4 19h16"/></svg>Export CSV</button>
+        <button class="add-btn ghost-btn" id="tmImport"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 21V9M7 14l5-5 5 5M4 5h16"/></svg>Import CSV</button>
+        <button class="add-btn" id="tmAdd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>Add Player</button>
+      </div>
+    </div>
+    <div class="sec-body"><div class="sec-inner">
+      <div class="sec-tools">
+        <input type="text" id="tmSearch" placeholder="Search name, class, position…">
+        <select id="tmClass"><option value="">All classes</option></select>
+        <span class="sec-count" id="tmCount"></span>
+      </div>
+      <div id="tmBody"></div>
+    </div></div>
+  </div>
+
+  <!-- ============ LIVE EVENT NOTES ============ -->
+  <div class="view" id="view-notes">
+    <div class="sec-head">
+      <button class="home-btn" data-goto="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10.5 12 3l9 7.5V21H3z"/></svg>Hub</button>
+      <div class="nt-head">
+        <h2 id="ntTitle">Event Notes</h2>
+        <span class="nt-sub" id="ntSub"></span>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:8px;">
+        <button class="add-btn ghost-btn" id="ntBack" style="display:none">← Pick another event</button>
+        <button class="add-btn ghost-btn" id="ntPaste">Paste roster</button>
+        <button class="add-btn ghost-btn" id="ntBook">Print book</button>
+        <button class="add-btn ghost-btn" id="ntBookBlank">Blank book</button>
+        <button class="add-btn ghost-btn" id="ntRead">Read written book</button>
+        <button class="add-btn ghost-btn" id="ntExport">Export notes</button>
+      </div>
+    </div>
+    <div class="sec-body"><div class="sec-inner">
+      <div id="ntPick" class="nt-pick"></div>
+      <div id="ntRosterWrap" style="display:none">
+        <div class="nt-tools">
+          <input type="text" id="ntAdd" list="ntAddList" placeholder="Add a player to this roster…">
+          <datalist id="ntAddList"></datalist>
+          <input type="text" id="ntTeam" placeholder="Travel team" style="min-width:150px">
+          <button class="btn-log" id="ntAddBtn">Add</button>
+          <input type="text" id="ntFilter" placeholder="Filter this roster…" style="min-width:170px">
+          <span class="sec-count" id="ntCount"></span>
+        </div>
+        <div id="ntRoster"></div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="modal" id="marksModal">
+    <div class="modal-head">
+      <button class="drawer-close" id="mkClose">✕</button>
+      <h3>Auto Marks &amp; Academics</h3>
+      <p>Tag players automatically off their measurables. Rules apply to everyone and re-tag the moment a number lands.</p>
+    </div>
+    <div class="modal-body">
+      <div id="mkRules"></div>
+      <button class="btn ghost" id="mkAdd" style="margin-top:6px">+ Add rule</button>
+      <div class="modal-divider"></div>
+      <div class="evm-field">
+        <label>Academic A+ badge — minimum GPA</label>
+        <div class="row"><input id="mkGpa" placeholder="e.g. 4.0" style="max-width:130px">
+          <span class="imp-hint" style="align-self:center;margin:0" id="mkGpaCount"></span></div>
+      </div>
+      <p class="imp-hint" style="margin:12px 0 0">
+        A range like "1.90-2.00" reads as its fast end. Use ≤ for times and ≥ for velocities. Most GPAs on this board are weighted, so the badge starts at 4.0 — drop it if you want a wider net.
+      </p>
+    </div>
+    <div class="modal-foot">
+      <button class="btn ghost" id="mkReset">Reset to default</button>
+      <button class="btn primary" id="mkSave">Save</button>
+    </div>
+  </div>
+
+  <div class="modal" id="mergeModal">
+    <div class="modal-head">
+      <button class="drawer-close" id="mgClose">✕</button>
+      <h3>Merge Duplicate Players</h3>
+      <p>Same kid on the board twice. Pick which record to keep — notes, tiers and links from both are combined.</p>
+    </div>
+    <div class="modal-body">
+      <div id="mgBody"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn ghost" id="mgCancel">Close</button>
+    </div>
+  </div>
+
+  <div class="modal" id="pasteModal">
+    <div class="modal-head">
+      <button class="drawer-close" id="pmClose">✕</button>
+      <h3>Paste A Roster</h3>
+      <p>One player per line. I'll match them against your board.</p>
+    </div>
+    <div class="modal-body">
+      <textarea class="paste-area" id="pmText" placeholder="Michael Alberto
+Brad Bucci, Peters Township
+12  Kline Cummings  LHP
+…"></textarea>
+      <p class="imp-hint" style="margin:10px 0 0">
+        Jersey numbers and anything after a comma or tab are ignored when matching — paste straight from a
+        roster sheet. Names already on your board get added to this event; ones I can't find are listed so
+        you can add them as new recruits in one click.
+      </p>
+      <div id="pmResult" style="display:none;margin-top:16px"></div>
+      <div class="form-error" id="pmError"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn ghost" id="pmCancel">Cancel</button>
+      <button class="btn primary" id="pmGo">Match names</button>
+    </div>
+  </div>
+
+  <!-- ============ TRANSFER RECRUITING ============ -->
+  <div class="view" id="view-transfer">
+    <div class="sec-head">
+      <button class="home-btn" data-goto="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10.5 12 3l9 7.5V21H3z"/></svg>Hub</button>
+      <h2>Transfer Recruiting</h2>
+    </div>
+    <div class="sec-body"><div class="sec-inner">
+      <div class="sec-empty">
+        <h4>Not built yet</h4>
+        <p>This is a placeholder. When you're ready it becomes a second board like High School Recruiting —
+           same 1 / 2 / 3 / XX tiers, profiles, notes and CSV import — but for portal players, with
+           current school, years of eligibility and entry date instead of grad class.
+           Say the word and I'll build it.</p>
+      </div>
+    </div></div>
+  </div>
+  <button class="cloud-btn off" id="cloudBtn">Sync off</button>
+  <div id="cloudWarn"></div>
+
+  <div class="modal" id="cloudModal">
+    <div class="modal-head">
+      <button class="drawer-close" id="clClose">✕</button>
+      <h3>Staff Sharing &amp; Sync</h3>
+      <p>Sign in and this board is the same board on every coach's phone, iPad and laptop. Your work always saves here first — sync happens after, and keeps working when the wifi doesn't.</p>
+    </div>
+    <div class="modal-body">
+      <div class="cl-state" id="clState"></div>
+
+      <div id="clSignedOut">
+        <div class="evm-field">
+          <label>Email</label>
+          <input id="clEmail" type="email" autocomplete="username" placeholder="you@school.edu">
+        </div>
+        <div class="evm-field">
+          <label>Password</label>
+          <input id="clPass" type="password" autocomplete="current-password" placeholder="••••••••">
+        </div>
+        <button class="btn primary" id="clSignIn">Sign in</button>
+        <p class="imp-hint" style="margin:10px 0 0">
+          Coaches don't sign themselves up. You add each one in the Supabase dashboard
+          under Authentication → Users, and give them the password you set.
+        </p>
+      </div>
+
+      <div id="clSignedIn" style="display:none">
+        <p class="cl-who">Signed in as <strong id="clWho"></strong></p>
+        <div class="cl-row">
+          <button class="btn primary" id="clSyncNow">Sync now</button>
+          <button class="btn ghost" id="clSignOut">Sign out</button>
+        </div>
+        <p class="imp-hint" style="margin:12px 0 0">
+          Call log entries you add are stamped with your email so the staff can see who talked to whom.
+        </p>
+      </div>
+
+      <div class="modal-divider"></div>
+      <details class="cl-adv">
+        <summary>Project connection</summary>
+        <div class="evm-field">
+          <label>Project URL</label>
+          <input id="clUrl" placeholder="https://xxxxxxxx.supabase.co">
+        </div>
+        <div class="evm-field">
+          <label>Anon / publishable key</label>
+          <input id="clKey" placeholder="eyJhbGciOi…">
+        </div>
+        <div class="evm-field">
+          <label>Reader endpoint <span class="imp-hint" style="text-transform:none;letter-spacing:0">(for screenshots and written books)</span></label>
+          <input id="clAi" placeholder="https://xxxx.supabase.co/functions/v1/read">
+        </div>
+        <button class="btn ghost" id="clSaveCfg">Save connection</button>
+        <p class="imp-hint" style="margin:10px 0 0">
+          Both come from Supabase → Project Settings → API. The anon key is meant to be
+          public — it can't read anything on its own, because the database only answers
+          signed-in staff.
+        </p>
+        <div class="modal-divider"></div>
+        <button class="btn ghost danger-ghost" id="clReset">Replace this device from the staff board</button>
+        <p class="imp-hint" style="margin:10px 0 0">
+          Use this on a coach's device the first time they sign in, so their empty starting
+          board doesn't push over the staff's work.
+        </p>
+      </details>
+    </div>
+    <div class="modal-foot">
+      <button class="btn primary" id="clDone">Done</button>
+    </div>
+  </div>
+
+  <div class="modal" id="staffModal">
+    <div class="modal-head">
+      <button class="drawer-close" id="cchClose">✕</button>
+      <h3>Coaches In Your Program</h3>
+      <p>Who shows up as a column on the calendar and who a task can be assigned to.
+         Initials are what fit in a calendar cell.</p>
+    </div>
+    <div class="modal-body">
+      <div id="cchList"></div>
+      <div class="row" style="margin-top:12px;gap:8px">
+        <input id="cchNew" placeholder="Add a coach — full name">
+        <button class="btn ghost" id="cchAdd">Add</button>
+      </div>
+    </div>
+    <div class="modal-foot"><button class="btn primary" id="cchDone">Done</button></div>
+  </div>
+
+  <div class="modal" id="calEntryModal">
+    <div class="modal-head">
+      <button class="drawer-close" id="ceClose">✕</button>
+      <h3 id="ceTitle">New Entry</h3>
+      <p>Visits, camps and travel days. Anything on campus during a dead period gets flagged.</p>
+    </div>
+    <div class="modal-body">
+      <div class="evm-grid">
+        <div class="evm-field"><label>Date</label><input type="date" id="ceDate"></div>
+        <div class="evm-field"><label>Type</label><select id="ceType"></select></div>
+        <div class="evm-field"><label>What</label><input id="ceWhat" placeholder="e.g. Campus visit"></div>
+        <div class="evm-field"><label>Coach</label><select id="ceCoach"></select></div>
+        <div class="evm-field full"><label>Player (optional)</label>
+          <input id="cePlayer" list="tkPlayerList" placeholder="Type a name from your board"></div>
+        <div class="evm-field full"><label>Notes</label><input id="ceNotes" placeholder="anything worth remembering"></div>
+      </div>
+      <p class="imp-hint" style="margin:10px 0 0;color:var(--dirt)" id="ceWarn"></p>
+    </div>
+    <div class="modal-foot">
+      <button class="btn ghost danger-ghost" id="ceDelete" style="display:none">Delete</button>
+      <button class="btn ghost" id="ceCancel">Cancel</button>
+      <button class="btn primary" id="ceSave">Save</button>
+    </div>
+  </div>
+
+  <div class="modal" id="gameImportModal">
+    <div class="modal-head">
+      <button class="drawer-close" id="gimClose">✕</button>
+      <h3>Import A Schedule</h3>
+      <p>Two shapes work. A spreadsheet copy with headers — date, time, venue, division,
+         home, away — or plain lines like <code>Sat 8:00 AM Field 3 16U Canes vs Scorpions</code>.
+         Anything without its own date uses the fallback below.</p>
+    </div>
+    <div class="modal-body">
+      <textarea id="gimText" class="notes" style="min-height:170px"
+        placeholder="date,time,venue,division,home,away&#10;2026-09-11,8:00 AM,Field 3,17U,Canes National,Scorpions"></textarea>
+      <div class="row" style="margin-top:10px;gap:10px;align-items:center">
+        <label class="imp-hint" style="margin:0">Fallback date</label>
+        <input type="date" id="gimDate">
+        <button class="btn ghost" id="gimRead">Read it</button>
+      </div>
+      <div class="modal-divider"></div>
+      <div id="gimPreview"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn ghost" id="gimCancel">Cancel</button>
+      <button class="btn primary" id="gimApply" disabled>Add the games</button>
+    </div>
+  </div>
+
+  <div class="modal" id="whiteboardModal">
+    <div class="modal-head">
+      <button class="drawer-close" id="wbClose">✕</button>
+      <h3 id="wbTitle">Whiteboard</h3>
+      <p>Scratch space for this event, shared with the staff. Who has the 10am, what
+         field, who to double up on.</p>
+    </div>
+    <div class="modal-body">
+      <textarea id="wbText" class="notes" style="min-height:280px"></textarea>
+      <p class="imp-hint" style="margin:8px 0 0" id="wbSaved"></p>
+    </div>
+    <div class="modal-foot"><button class="btn primary" id="wbDone">Done</button></div>
+  </div>
+
+  <div class="modal" id="ogPasteModal">
+    <div class="modal-head">
+      <button class="drawer-close" id="ogPasteClose">✕</button>
+      <h3>Paste A List Of Programs</h3>
+      <p>One per line. A number at the front is read as the rank —
+         <code>1. Canes National</code> — otherwise you can use the order they're in.
+         Programs already on your list keep their tier and just get the rank.</p>
+    </div>
+    <div class="modal-body">
+      <textarea id="ogPasteText" class="notes" style="min-height:180px"
+        placeholder="1. Canes National&#10;2. East Cobb Astros&#10;3. Marucci Elite"></textarea>
+      <label style="display:flex;align-items:center;gap:8px;margin-top:11px;font-size:13px;color:var(--chalk-dim);cursor:pointer;">
+        <input type="checkbox" id="ogUseOrder" checked> Treat the order as the ranking when there is no number
+      </label>
+    </div>
+    <div class="modal-foot">
+      <button class="btn ghost" id="ogPasteCancel">Cancel</button>
+      <button class="btn primary" id="ogPasteApply">Add them</button>
+    </div>
+  </div>
+
+  <div class="modal" id="linkPasteModal">
+    <div class="modal-head">
+      <button class="drawer-close" id="lpClose">✕</button>
+      <h3>Paste Profile Links</h3>
+      <p>Drop in Perfect Game or PBR profile addresses — one per line, as many as you like.
+         A PBR address carries the player's name and state, so those match themselves.
+         A Perfect Game address is only an id, so you'll pick the player.</p>
+    </div>
+    <div class="modal-body">
+      <textarea id="lpText" class="notes" style="min-height:110px"
+        placeholder="https://www.prepbaseballreport.com/profiles/FL/Kline-Cummings-9805147632&#10;https://www.perfectgame.org/Players/Playerprofile.aspx?ID=1104274"></textarea>
+      <div class="row" style="margin-top:10px;align-items:center;gap:10px">
+        <button class="btn ghost" id="lpRead">Read links</button>
+        <span class="imp-hint" style="margin:0" id="lpStat"></span>
+      </div>
+      <div class="modal-divider"></div>
+      <div id="lpBody"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn ghost" id="lpCancel">Cancel</button>
+      <button class="btn primary" id="lpApply" disabled>Attach links</button>
+    </div>
+  </div>
+
+  <div class="modal" id="bookReadModal">
+    <div class="modal-head">
+      <button class="drawer-close" id="bkrClose">✕</button>
+      <h3>Read A Written Book</h3>
+      <p>Photograph the pages of the blank book after you've written on them. The handwriting
+         gets transcribed onto each player's notes, and any velo, pop, 60 or EV you wrote down
+         becomes a measurable.</p>
+    </div>
+    <div class="modal-body">
+      <input type="file" id="bkrFiles" accept="image/*" multiple>
+      <div id="bkrThumbs" class="bkr-thumbs"></div>
+      <div class="row" style="margin-top:10px;align-items:center;gap:10px">
+        <button class="btn ghost" id="bkrRead" disabled>Read pages</button>
+        <span class="shot-status" id="bkrStatus"></span>
+      </div>
+      <div class="modal-divider"></div>
+      <div id="bkrBody"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn ghost" id="bkrCancel">Cancel</button>
+      <button class="btn primary" id="bkrApply" disabled>Write to profiles</button>
+    </div>
+  </div>
+
+  <div id="printBook"></div>
+  <div id="bkBar">
+    <span class="t" id="bkTitle">Event book</span>
+    <span class="hint" id="bkHint"></span>
+    <button id="bkPrint">Print / Save PDF</button>
+    <button class="ghost" id="bkClose">Close</button>
+  </div>
+  <div class="scrim" id="scrim"></div>
+  <div class="drawer" id="drawer">
+    <div class="drawer-head">
+      <button class="drawer-close" id="drawerClose">✕</button>
+      <h3 class="dh-name" id="dName"></h3>
+      <div class="dh-sub" id="dSub"></div>
+    </div>
+    <div class="drawer-body" id="drawerBody"></div>
+  </div>
+  <div class="modal" id="addModal">
+    <div class="modal-head">
+      <button class="drawer-close" id="modalClose">✕</button>
+      <h3>Add Player</h3>
+      <p>New recruit added here shows up in their position tab immediately.</p>
+    </div>
+    <div class="modal-body">
+      <div class="shot-uploader">
+        <label>Fill From Screenshot <span class="shot-optional">(optional — e.g. their X profile)</span></label>
+        <div class="shot-row">
+          <input type="file" id="f_screenshot" accept="image/*">
+          <button class="btn primary small" id="extractBtn" disabled>Extract Info</button>
+        </div>
+        <img id="shotPreview" style="display:none;">
+        <div class="shot-status" id="shotStatus"></div>
+      </div>
+      <div class="modal-divider"></div>
+      <div class="form-grid">
+        <div class="form-field"><label>First Name <span class="req">*</span></label><input id="f_first"></div>
+        <div class="form-field"><label>Last Name <span class="req">*</span></label><input id="f_last"></div>
+        <div class="form-field"><label>Position <span class="req">*</span></label><input id="f_pos" placeholder="e.g. RHP, SS/3B, C"></div>
+        <div class="form-field"><label>Tier</label>
+          <select id="f_tier">
+            <option value="C">C — Committed</option>
+            <option value="1">1 — Top Lion</option>
+            <option value="2" selected>2 — Guy To See</option>
+            <option value="3">3 — Need To See More</option>
+            <option value="4">4 — Recommended To Us / Emailed</option>
+            <option value="XX">XX — Not A Guy</option>
+            <option value="X">X — Not Interested</option>
+            <option value="E">E — Committed Elsewhere</option>
+          </select>
+        </div>
+        <div class="form-field"><label>State</label><input id="f_state" placeholder="e.g. TX"></div>
+        <div class="form-field"><label>Grad Class</label><input id="f_grad" placeholder="e.g. 2028"></div>
+        <div class="form-field"><label>School</label><input id="f_school"></div>
+        <div class="form-field"><label>Team / Program</label><input id="f_team"></div>
+        <div class="form-field"><label>B/T</label><input id="f_bt" placeholder="e.g. R/R"></div>
+        <div class="form-field"><label>Height</label><input id="f_height" placeholder="e.g. 6-1"></div>
+        <div class="form-field"><label>Weight (lbs)</label><input id="f_weight"></div>
+        <div class="form-field"><label>GPA</label><input id="f_gpa"></div>
+        <div class="form-field"><label>Phone</label><input id="f_phone"></div>
+        <div class="form-field"><label>Email</label><input id="f_email"></div>
+        <div class="form-field full"><label>X / Twitter link or handle</label><input id="f_x" placeholder="e.g. @handle or https://x.com/handle"></div>
+        <div class="form-field"><label>Coach assigned</label><input id="f_coach" placeholder="e.g. DV"></div>
+        <div class="form-field full"><label>Committed to</label><input id="f_commit" placeholder="college name, if already committed"></div>
+        <div class="form-field full"><label>Perfect Game profile</label><input id="f_pg" placeholder="https://www.perfectgame.org/Players/…"></div>
+        <div class="form-field full"><label>PBR profile</label><input id="f_pbr" placeholder="https://www.prepbaseballreport.com/players/…"></div>
+        <div class="form-field full"><label>Address</label><input id="f_address" placeholder="Street"></div>
+        <div class="form-field"><label>City</label><input id="f_city"></div>
+        <div class="form-field"><label>Zip</label><input id="f_zip"></div>
+        <div class="form-field full"><label>Phone Notes</label><input id="f_phonenotes"></div>
+        <div class="form-field full"><label>Origin Notes</label><input id="f_origin" placeholder="How you found them"></div>
+        <div class="form-field full"><label>Scouting Notes</label><input id="f_notes"></div>
+      </div>
+      <div class="form-error" id="formError"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn ghost" id="cancelAdd">Cancel</button>
+      <button class="btn primary" id="submitAdd">Add Player</button>
+    </div>
+  </div>
+  <div class="modal" id="importModal">
+    <div class="modal-head">
+      <button class="drawer-close" id="importClose">✕</button>
+      <h3>Import Recruits From CSV</h3>
+      <p>Add many players at once. Nothing is saved until you confirm the preview.</p>
+    </div>
+    <div class="modal-body">
+      <div class="imp-drop">
+        <input type="file" id="impFile" accept=".csv,text/csv">
+        <div class="imp-hint">
+          First row must be column headers. Recognised: <code>First Name</code>, <code>Last Name</code>,
+          <code>Position</code>, <code>Tier</code>, <code>School</code>, <code>Team</code>, <code>Grad Class</code>,
+          <code>B/T</code>, <code>Height</code>, <code>Weight</code>, <code>GPA</code>, <code>Address</code>,
+          <code>City</code>, <code>State</code>, <code>Zip</code>, <code>Phone</code>, <code>Phone Notes</code>,
+          <code>Email</code>, <code>X / Twitter</code>, <code>Perfect Game</code>, <code>PBR</code>, <code>Commit</code>, <code>Coach Assigned</code>,
+          <code>Origin Notes</code>, <code>Scouting Notes</code>.
+          Unknown columns are ignored. A file exported from this board imports straight back in.
+        </div>
+      </div>
+      <div id="impResult" style="display:none;">
+        <div class="imp-summary" id="impSummary"></div>
+        <div class="imp-opts">
+          <label><input type="checkbox" id="impSkipDupes" checked> Skip rows that match a player already on the board</label>
+          <label><input type="checkbox" id="impDefaultTier2" checked> Put rows with no Tier column into tier 2 (Guy To See)</label>
+        </div>
+        <div class="imp-preview" id="impPreview"></div>
+      </div>
+      <div class="imp-error" id="impError"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn ghost" id="importCancel">Cancel</button>
+      <button class="btn primary" id="importConfirm" disabled>Import</button>
+    </div>
+  </div>
+  <div class="modal" id="eventModal">
+    <div class="modal-head">
+      <button class="drawer-close" id="evmClose">✕</button>
+      <h3 id="evmTitle">Add Event</h3>
+      <p class="evm-sub" id="evmDates"></p>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-field full"><label>Event name <span class="req">*</span></label><input id="evmName" placeholder="e.g. 2026 PG Fall Atlanta Open"></div>
+        <div class="form-field"><label>Start date <span class="req">*</span></label><input id="evmStart" type="date"></div>
+        <div class="form-field"><label>End date</label><input id="evmEnd" type="date"></div>
+        <div class="form-field"><label>Division</label><input id="evmDiv" placeholder="e.g. 16U, 17U"></div>
+        <div class="form-field"><label>State</label><input id="evmState" placeholder="e.g. GA"></div>
+        <div class="form-field full"><label>Location</label><input id="evmLoc" placeholder="City, ST"></div>
+        <div class="form-field full"><label>Which site is it from?</label>
+          <select id="evmSource">
+            <option value="">— not specified —</option>
+            <option value="Perfect Game">Perfect Game</option>
+            <option value="PBR">PBR (Prep Baseball Report)</option>
+            <option value="Five Tool">Five Tool</option>
+            <option value="Prospect Select">Prospect Select</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-divider"></div>
+      <p class="imp-hint" style="margin:0 0 14px">
+        Paste the tournament's page on any site. <strong>Find</strong> searches that site for this event.
+        Saved links turn green in the table and open in one click; anything left blank falls back to a search.
+      </p>
+      <div class="evm-field">
+        <label>Perfect Game</label>
+        <div class="row"><input id="evmPg" placeholder="https://www.perfectgame.org/…"><button class="evm-find" data-find="pg">Find</button></div>
+      </div>
+      <div class="evm-field">
+        <label>PBR (Prep Baseball Report)</label>
+        <div class="row"><input id="evmPbr" placeholder="https://tournaments.prepbaseballreport.com/…"><button class="evm-find" data-find="pbr">Find</button></div>
+      </div>
+      <div class="evm-field">
+        <label>Five Tool</label>
+        <div class="row"><input id="evmFt" placeholder="https://events.fivetool.org/…"><button class="evm-find" data-find="ft">Find</button></div>
+        </div>
+      <div class="evm-field"><label>Prospect Select URL</label>
+        <div class="row"><input id="evmPs" placeholder="https://play.ps-baseball.com/…"><button class="evm-find" data-find="ps">Find</button></div>
+      </div>
+      <div class="evm-field" id="evmOtherWrap" style="display:none">
+        <label>Other event page</label>
+        <div class="row"><input id="evmOther" placeholder="https://…"></div>
+      </div>
+      <div class="modal-divider"></div>
+      <div class="fg-label" style="color:var(--dirt);margin-bottom:10px">Attending <span id="evmAttCount"></span></div>
+      <div class="att-add">
+        <input class="grow" id="evmAttPlayer" list="evmPlayerList" placeholder="Type a recruit's name…">
+        <input id="evmAttTeam" placeholder="Travel team" style="width:170px">
+        <button class="btn-log" id="evmAttAdd">Add</button>
+      </div>
+      <datalist id="evmPlayerList"></datalist>
+      <div id="evmAttList"></div>
+      <div class="form-error" id="evmError"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="rc-no" id="evmDelete" style="margin-right:auto;display:none;padding:9px 14px">Delete event</button>
+      <button class="btn ghost" id="evmCancel">Cancel</button>
+      <button class="btn primary" id="evmSave">Save event</button>
+    </div>
+  </div>
+  <div class="modal" id="linkModal">
+    <div class="modal-head">
+      <button class="drawer-close" id="linkClose">✕</button>
+      <h3 id="linkTitle">Open Link</h3>
+      <p id="linkSub">This viewer blocks opening new tabs.</p>
+    </div>
+    <div class="modal-body">
+      <input class="lk-url" id="linkUrl" readonly>
+      <p class="lk-note" id="linkNote"></p>
+      <a class="lk-open" id="linkAnchor" href="#" target="_blank" rel="noopener">Try opening it anyway ↗</a>
+      <span class="lk-copied" id="linkCopied"></span>
+    </div>
+    <div class="modal-foot">
+      <button class="btn ghost" id="linkDismiss">Close</button>
+      <button class="btn primary" id="linkCopy">Copy link</button>
+    </div>
+  </div>
+<script>
+const PLAYERS = __DATA__;

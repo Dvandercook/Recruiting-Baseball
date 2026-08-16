@@ -1,0 +1,16 @@
+{
+  "name": "recruiting-board",
+  "version": "1.0.0",
+  "private": true,
+  "description": "College baseball recruiting board",
+  "scripts": {
+    "build": "python3 build.py",
+    "serve": "cd dist && python3 -m http.server 8810",
+    "test": "node tests/modcheck.mjs && node tests/batchcheck.mjs && node tests/orgcheck.mjs"
+  },
+  "devDependencies": {
+    "terser": "^5.50.0",
+    "clean-css": "^5.3.3",
+    "playwright": "^1.48.0"
+  }
+}

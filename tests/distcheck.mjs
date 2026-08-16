@@ -1,0 +1,35 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const p = await b.newPage();
+const errs=[]; p.on('pageerror',e=>errs.push('PAGEERROR: '+e.message));
+p.on('console',m=>{if(m.type()==='error'&&!/TUNNEL|favicon/.test(m.text()))errs.push('CONSOLE: '+m.text().slice(0,120));});
+await p.goto('http://127.0.0.1:8810/'); await p.waitForTimeout(1800);
+console.log('players loaded:', await p.evaluate(()=>typeof PLAYERS!=='undefined' && PLAYERS.length));
+console.log('events seeded :', await p.evaluate(()=>typeof SEED_EVENTS!=='undefined' && SEED_EVENTS.length));
+console.log('hub tiles     :', await p.locator('.tile').count());
+await p.evaluate(()=>goTo('hs')); await p.waitForTimeout(700);
+console.log('board cards   :', await p.locator('.bb-card').count());
+await p.locator('#hsModeSeg button').nth(1).click(); await p.waitForTimeout(400);
+console.log('grid rows     :', await p.locator('.row').count());
+await p.fill('#searchInput','Bailey'); await p.waitForTimeout(300);
+await p.locator('.row').first().click(); await p.waitForTimeout(500);
+console.log('drawer opens  :', await p.locator('#dName').textContent());
+await p.fill('#fi_m60','6.44'); await p.locator('#fi_m60').blur(); await p.waitForTimeout(800);
+await p.keyboard.press('Escape'); await p.waitForTimeout(300);
+await p.reload(); await p.waitForTimeout(1500);
+await p.evaluate(()=>goTo('hs')); await p.waitForTimeout(500);
+await p.locator('#hsModeSeg button').nth(1).click(); await p.waitForTimeout(300);
+await p.fill('#searchInput','Bailey'); await p.waitForTimeout(300);
+await p.locator('.row').first().click(); await p.waitForTimeout(500);
+console.log('persisted 60  :', await p.locator('#fi_m60').inputValue());
+await p.keyboard.press('Escape');
+const sw = await p.evaluate(async()=>{ const r = await navigator.serviceWorker.getRegistration(); return !!r; });
+console.log('service worker:', sw);
+for (const s of ['hs','calendar','team','notes','orgs','tasks','fall','summer','spring','transfer']) {
+  const okv = await p.evaluate(async(sec)=>{ goTo(sec); await new Promise(r=>setTimeout(r,150));
+    const d=SECTIONS.find(x=>x.id===sec); const el=document.getElementById(d.view);
+    return !!el && getComputedStyle(el).display!=='none' && el.innerText.trim().length>20; }, s);
+  console.log('view', s.padEnd(9), okv);
+}
+console.log('\nERRORS:', errs.length?errs:'none');
+await b.close();

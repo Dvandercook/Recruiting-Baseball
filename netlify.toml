@@ -1,0 +1,9 @@
+# Netlify builds the site from source on every push.
+# The build image already has Python 3 and Node; npm brings in the minifiers.
+[build]
+  command = "npm install --no-audit --no-fund && python3 build.py"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+  PYTHON_VERSION = "3.11"

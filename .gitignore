@@ -1,0 +1,6 @@
+node_modules/
+dist/
+recruiting_board_v2.html
+*.zip
+*.png
+!icon-*.png
