@@ -35,13 +35,18 @@ goes up the moment you're back on wifi.
 
 ## 2. Create the table
 
+Already done on the live project. This is how to do it again on a new one.
+
 1. Left sidebar → **SQL Editor** → **New query**.
-2. Open `supabase_setup.sql` (delivered alongside this guide), copy the whole
-   thing, paste it in, and hit **Run**.
+2. Open `supabase/migrations/20260817000000_records.sql` from the repo, copy the
+   whole thing, paste it in, and hit **Run**.
 3. You should see "Success. No rows returned." That's correct — it built the
    table, the security policies and the write trigger.
 
 This is safe to run again later if you ever need to.
+
+Or skip it: with the GitHub integration connected (§10), pushing to `main` applies
+everything in `supabase/migrations/` for you.
 
 ## 3. Turn off public signups
 
@@ -173,9 +178,13 @@ nobody outside your staff can spend your credits.
 1. Get an Anthropic API key at **console.anthropic.com** — it's pay-as-you-go and
    separate from any Claude subscription. Reading a page of handwriting costs
    around a cent; a season of use is a few dollars.
-2. In Supabase: **Edge Functions** → **Deploy a new function**, name it `read`,
-   and paste in `ai_proxy.ts`.
-3. **Edge Functions** → **Secrets** → add `ANTHROPIC_API_KEY` with your key.
+2. The function is already deployed as `read` — its source lives at
+   `supabase/functions/read/index.ts`. To redeploy by hand: **Edge Functions** →
+   **Deploy a new function** → **Via Editor**, name it `read`, paste that file in.
+   Leave **Verify JWT** on; the function has no auth logic of its own.
+3. **Edge Functions** → **Secrets** → add `ANTHROPIC_API_KEY` with your key. Until
+   this exists the reader answers 500 with `ANTHROPIC_API_KEY is not set on this
+   function`.
 4. Copy the function's URL — `https://YOUR-PROJECT.supabase.co/functions/v1/read`.
 5. In the app: the **Sync** pill → **Project connection** → paste it into
    **Reader endpoint** → **Save connection**.
@@ -216,6 +225,34 @@ It transcribes; it doesn't editorialise. If you wrote three words, you get three
 words.
 
 ---
+
+## 10. Keeping the backend in the repo
+
+The database schema and the reader function both live in the repo now, under
+`supabase/`. Supabase watches the repo and applies changes on push, the same reflex
+as the Netlify deploy.
+
+**Supabase → Settings → Integrations → GitHub:**
+
+- **Repository** — `Dvandercook/Recruiting-Baseball`
+- **Working directory** — `.` (a single dot; the `supabase/` folder is at the repo root)
+- **Deploy to production** — on
+- **Production branch** — `main`
+
+Preview branches need a paid plan; production deploys don't, so leave branching off.
+
+Two rules, and they matter:
+
+1. **Never edit a migration that has already been applied.** Add a new file with a
+   later timestamp instead. Supabase decides what to run by filename against
+   `supabase_migrations.schema_migrations` — editing history in place means the
+   change silently never runs.
+2. **Keep every migration idempotent** — `create ... if not exists`,
+   `create or replace`, `drop ... if exists`. That table has no record of anything you
+   ran by hand in the SQL Editor, so a hand-run migration *will* run again on the next
+   push. The first one is written this way on purpose.
+
+Secrets, coach logins and API keys stay out of the repo. Those are dashboard-only.
 
 ## How it behaves once it's running
 

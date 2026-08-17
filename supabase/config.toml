@@ -1,0 +1,12 @@
+# Supabase project config.
+#
+# `project_id` is what links this folder to the hosted project. The GitHub
+# integration (Supabase → Settings → Integrations) reads it, and so does the
+# CLI if you ever run `supabase link`.
+project_id = "aqoiqmflmfhnnmwagato"
+
+[functions.read]
+# The reader service. Keep JWT verification ON: the function itself has no auth
+# logic, so it relies on the gateway to confirm the caller is a signed-in coach
+# before any Anthropic credits get spent.
+verify_jwt = true

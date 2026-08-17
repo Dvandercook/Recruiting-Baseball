@@ -99,7 +99,8 @@ node tests/sbcheck2.mjs     # behaviour inside a sandboxed iframe
 
 `tests/distcheck.mjs` tests the hosted build — serve `dist/` on port 8810 first.
 `tests/mock_supabase.mjs` is a stand-in server implementing the same contract as
-`supabase_setup.sql`, so sync is testable without touching a live project.
+the migration in `supabase/migrations/`, so sync is testable without touching a live
+project.
 
 **Run the suites after any change.** They have caught real bugs repeatedly — game times
 sorting as strings, a venue swallowed into a team name, sync silently dropping another
@@ -107,12 +108,36 @@ coach's call-log entry.
 
 ---
 
-## The other pieces
+## The Supabase side
+
+The `supabase/` folder is the backend, and it deploys the same way the site does —
+Supabase watches this repo (Settings → Integrations → GitHub, working directory `.`,
+production branch `main`) and applies anything new on push.
+
+| Path | What it is |
+|---|---|
+| `supabase/config.toml` | Links this folder to project `aqoiqmflmfhnnmwagato`. Also pins `verify_jwt = true` on the reader. |
+| `supabase/migrations/*.sql` | The schema, in order. `20260817000000_records.sql` creates the shared table, its index, the server-clock trigger and the RLS policies. |
+| `supabase/functions/read/index.ts` | The reader service. Holds the Anthropic API key so the page never has to. |
+
+**Migrations must stay idempotent.** Supabase tracks what it has applied in
+`supabase_migrations.schema_migrations`, and that table doesn't know about anything you ran
+by hand in the SQL Editor — so a migration you already ran manually *will* run again on the
+next push. `create ... if not exists`, `create or replace`, `drop ... if exists`. The first
+migration was written this way for exactly this reason.
+
+Add a migration; never edit one that has already been applied.
+
+### Not in the repo, and shouldn't be
+
+- **`ANTHROPIC_API_KEY`** — Edge Functions → Secrets, set by hand.
+- **The coach logins** — Authentication → Users.
+- **The anon key and project URL** — pasted into the app's Sync → Project connection.
+
+### Also external
 
 | File | Where it goes |
 |---|---|
-| `supabase_setup.sql` | Supabase → SQL Editor. Creates the shared table and its security rules. |
-| `ai_proxy.ts` | Supabase Edge Function named `read`. Holds the Anthropic API key so the page never has to. |
 | `sheet_mirror.gs` | Apps Script inside your Google Sheet. Mirrors the board into four tabs every 15 minutes. |
 | `Staff Sync Setup.md` | The click-by-click setup for all of the above. |
 

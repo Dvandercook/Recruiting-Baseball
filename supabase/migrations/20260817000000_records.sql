@@ -1,6 +1,7 @@
 -- ===========================================================================
 --  Recruiting Board — shared staff database
---  Paste this whole file into Supabase → SQL Editor → New query → Run.
+--  Applied by the GitHub integration on push to main, and safe to paste into
+--  Supabase → SQL Editor → New query → Run by hand.
 --  Safe to run more than once.
 -- ===========================================================================
 
