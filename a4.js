@@ -527,13 +527,12 @@ function closeDrawer(){
   drawerRepaint = null;
   document.getElementById('scrim').classList.remove('show');
   document.getElementById('drawer').classList.remove('show');
-  document.getElementById('addModal').classList.remove('show');
-  document.getElementById('importModal').classList.remove('show');
-  document.getElementById('linkModal').classList.remove('show');
-  const em = document.getElementById('eventModal'); if(em) em.classList.remove('show');
-  const pm = document.getElementById('pasteModal'); if(pm) pm.classList.remove('show');
-  const mk = document.getElementById('marksModal'); if(mk) mk.classList.remove('show');
-  const mg = document.getElementById('mergeModal'); if(mg) mg.classList.remove('show');
+  // Close every modal, rather than a hand-kept list of ids. The list only ever
+  // named seven of the fifteen, so Sync, Staff, the book reader, the calendar
+  // entry, game import, link paste, org paste and the whiteboard all stayed on
+  // screen — their ✕ and Done buttons call this function, so the click landed
+  // and nothing moved. A modal added later now closes without touching this.
+  document.querySelectorAll('.modal.show').forEach(m=> m.classList.remove('show'));
   currentPlayerId = null;
 }
 document.getElementById('drawerClose').addEventListener('click', closeDrawer);
