@@ -15,8 +15,16 @@
 // name it "read", then add the secret under Edge Functions → Secrets.
 
 const ANTHROPIC_URL = 'https://api.anthropic.com/v1/messages';
-const ALLOWED_MODELS = ['claude-sonnet-4-6', 'claude-haiku-4-5'];
+const ALLOWED_MODELS = ['claude-opus-5', 'claude-sonnet-5', 'claude-haiku-4-5'];
 const MAX_TOKENS_CAP = 8000;
+
+// On Opus 5 and Sonnet 5 thinking is ON when a request omits the `thinking`
+// field, and thinking tokens count against max_tokens. The board asks for 1000
+// on a screenshot, which reasoning could swallow whole — truncating the
+// transcription mid-page. Both readers want transcription, not deliberation.
+// Older models don't accept `{type:'disabled'}`, so only the ones that default
+// it on get the override.
+const THINKING_ON_BY_DEFAULT = new Set(['claude-opus-5', 'claude-sonnet-5']);
 
 const cors = {
   'Access-Control-Allow-Origin': '*',        // tighten to your app's URL once it's hosted
@@ -50,6 +58,7 @@ Deno.serve(async (req: Request) => {
   const payload = {
     model,
     max_tokens,
+    ...(THINKING_ON_BY_DEFAULT.has(model) ? { thinking: { type: 'disabled' } } : {}),
     ...(typeof body.system === 'string' ? { system: body.system } : {}),
     messages: body.messages,
   };

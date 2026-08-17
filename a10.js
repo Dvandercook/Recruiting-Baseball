@@ -19,7 +19,7 @@ var AI = {
   get configured(){ return !!this.endpoint; },
 
   async call(payload){
-    const body = JSON.stringify(Object.assign({ model:'claude-sonnet-4-6' }, payload));
+    const body = JSON.stringify(Object.assign({ model:'claude-opus-5' }, payload));
     let res, via;
     if(this.endpoint){
       const headers = { 'Content-Type':'application/json' };
