@@ -17,7 +17,7 @@ const fail = [];
 const ok = (n,c,x='') => { console.log((c?'PASS  ':'FAIL  ')+n+(x?'  '+x:'')); if(!c) fail.push(n); };
 
 /* ---- 1. a coach uses the app and syncs ---- */
-const b = await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const b = await chromium.launch({executablePath:'/opt/pw-browsers/chromium'}).catch(()=> chromium.launch());
 const p = await b.newPage();
 p.on('pageerror', e => console.log('PAGEERROR:', e.message));
 await p.goto(APP);

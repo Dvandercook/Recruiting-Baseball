@@ -10,7 +10,7 @@ const PORT = 8799;
 const API = `http://127.0.0.1:${PORT}`;
 const mock = await start(PORT);
 
-const b = await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const b = await chromium.launch({executablePath:'/opt/pw-browsers/chromium'}).catch(()=> chromium.launch());
 const fail = [];
 const ok = (n,c,x='') => { console.log((c?'PASS  ':'FAIL  ')+n+(x?'  '+x:'')); if(!c) fail.push(n); };
 

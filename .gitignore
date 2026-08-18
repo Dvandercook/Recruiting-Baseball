@@ -4,3 +4,5 @@ recruiting_board_v2.html
 *.zip
 *.png
 !icon-*.png
+node_modules/
+package-lock.json

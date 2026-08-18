@@ -4,7 +4,7 @@ import path from 'path';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const APP = 'file://' + path.join(ROOT, 'recruiting_board_v2.html');
 
-const b = await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const b = await chromium.launch({executablePath:'/opt/pw-browsers/chromium'}).catch(()=> chromium.launch());
 const p = await (await b.newContext()).newPage();
 const errs=[]; p.on('pageerror',e=>errs.push('PAGEERROR: '+e.message));
 
