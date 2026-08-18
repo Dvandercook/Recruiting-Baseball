@@ -1,5 +1,5 @@
 import { chromium } from 'playwright';
-const b = await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const b = await chromium.launch({executablePath:'/opt/pw-browsers/chromium'}).catch(()=> chromium.launch());
 const p = await b.newPage();
 const errs=[]; p.on('pageerror',e=>errs.push('PAGEERROR: '+e.message));
 p.on('console',m=>{if(m.type()==='error'&&!/TUNNEL|favicon/.test(m.text()))errs.push('CONSOLE: '+m.text().slice(0,120));});

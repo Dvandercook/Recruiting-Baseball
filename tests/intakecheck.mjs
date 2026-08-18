@@ -32,7 +32,7 @@ const srv = http.createServer(async (req,res)=>{
 await new Promise(r=> srv.listen(8803, r));
 const ENDPOINT = 'http://127.0.0.1:8803/read';
 
-const b = await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const b = await chromium.launch({executablePath:'/opt/pw-browsers/chromium'}).catch(()=> chromium.launch());
 const p = await b.newPage();
 p.on('pageerror', e => console.log('PAGEERROR:', e.message));
 await p.goto(APP);
