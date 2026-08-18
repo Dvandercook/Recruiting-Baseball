@@ -440,17 +440,24 @@ Brad Bucci, Peters Township
       <div class="modal-divider"></div>
       <details class="cl-adv">
         <summary>Project connection</summary>
+        <!-- autocapitalize/autocorrect off on all three: iOS defaults a bare
+             input to sentence case, which silently turns a pasted or typed
+             sb_publishable_… key into Sb_publishable_… and the project answers
+             "Invalid API key". Same trap for the two URLs. -->
         <div class="evm-field">
           <label>Project URL</label>
-          <input id="clUrl" placeholder="https://xxxxxxxx.supabase.co">
+          <input id="clUrl" placeholder="https://xxxxxxxx.supabase.co"
+                 autocapitalize="none" autocorrect="off" spellcheck="false" autocomplete="off">
         </div>
         <div class="evm-field">
           <label>Anon / publishable key</label>
-          <input id="clKey" placeholder="eyJhbGciOi…">
+          <input id="clKey" placeholder="sb_publishable_… or eyJhbGciOi…"
+                 autocapitalize="none" autocorrect="off" spellcheck="false" autocomplete="off">
         </div>
         <div class="evm-field">
           <label>Reader endpoint <span class="imp-hint" style="text-transform:none;letter-spacing:0">(for screenshots and written books)</span></label>
-          <input id="clAi" placeholder="https://xxxx.supabase.co/functions/v1/read">
+          <input id="clAi" placeholder="https://xxxx.supabase.co/functions/v1/read"
+                 autocapitalize="none" autocorrect="off" spellcheck="false" autocomplete="off">
         </div>
         <button class="btn ghost" id="clSaveCfg">Save connection</button>
         <p class="imp-hint" style="margin:10px 0 0">
